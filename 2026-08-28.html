@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+
+
+
+
+// svenska flaggan
+rectangle(200, 200, 400, 250, "blue") //blå bakgrund
+rectangle(200, 310, 400, 50, "yellow") //gul vågrätt
+rectangle(300, 200, 70, 250, "yellow") //gul lodrätt
+
+//flaggstång
+rectangle(200, 450, 40, 350, "grey") //stång
+circle(214, 178, 25, "gold") //kronan 
+
+text(250, 50, 30, "I <3 PROGRAMMING", "black") //text
+
+
+// ---------------------------------------------------------------
+
+var color = "purple";
+var storlek = 30;
+var face = {x: random(100, totalWidth - 100), 
+    y: 700, 
+    color: mixColor(150, 24, 50), 
+    mun: 50}
+
+
+circle(face.x, face.y, 100, face.color)
+circle(face.x + 50, face.y - 50, 25, "black")
+circle(face.x - 50, face.y - 50, 25, "black")
+
+
+
+
+
+ring(850, 400, 200, 30, color)
+ring(770, 430, 170, storlek, "red")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

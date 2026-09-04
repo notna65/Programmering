@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+
+
+    var player = { 
+        x: 500, 
+        y: 400, 
+        size: 40, 
+        color: "blue", 
+        speedX: 5, // km/h //Med 0, så blir bollen fallande
+        speedY: 1, //Ändrar jag speed till ett negativt tal så rör cirkeln sig åt vänster.
+        directionX: 1, 
+        directionY: 1
+    }
+//blå boll
+    var enemy = {
+        x: 100, 
+        y: 100, 
+        bredd: 50, 
+        hojd: 50, 
+        color: "red", 
+        speedX: 5,
+        speedY: 0, 
+        directionX: 1, 
+        directionY: -1
+
+
+//röd kvadrat
+    }
+    
+
+
+
+
+    //Lägg till direction för Y i ditt objekt
+    //Uppdatera player.y-rader med din nya egenskap
+    //testa 1 och -1 i directionX och directionY
+    function update() { 
+        clearScreen()  
+        // När jag tar bort clearScreen() så smetar cirkeln ut sig till en lång mask istället.
+
+        circle(player.x, player.y, player.size, player.color);
+        player.x = player.x + player.speedX * player.directionX;
+        player.y = player.y + player.speedY * player.directionY;
+        
+        rectangle(enemy.x, enemy.y, enemy.bredd, enemy.hojd, enemy.color) 
+        
+        enemy.x = enemy.x + enemy.speedX * enemy.directionX
+        enemy.y = enemy.y + enemy.speedY * enemy.directionY
+
+
+
+        setTimeout(() => {
+            enemy.x = enemy.x + mouse.x / 100
+        }, 1000)
+
+
+        console.log(player.x)
+    
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
