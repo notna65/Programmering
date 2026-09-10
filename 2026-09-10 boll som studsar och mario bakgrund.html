@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+
+var player = { 
+    x: 50,
+    y: 200,
+    size: 40, 
+    color: "blue", 
+    speedX: 40, 
+    direction: 1 };
+var x = 0
+var bounce = 1
+function update() {
+    
+    clearScreen();
+
+    picture(x, 0, "https://shorturl.at/9F9lR", totalWidth * 2, totalHeight) //lägger till en mario bakgrund
+    x-- //får bakgrunden att röra på sig 
+    circle(player.x, player.y, player.size, player.color)
+
+    player.x = player.x + player.speedX * player.direction;
+
+    text(50, 50, 40, "Antal studs är: " + bounce, "white")
+
+
+
+    if(player.x + player.size > totalWidth) {
+
+        player.direction = -1;              
+        player.color = "green"
+        bounce++
+        
+        //player.y = player.y + 20
+    }
+
+     //om spelaren når höger kant så studsar den tillbaka ^^
+   
+   
+   
+   
+    if(player.x - player.size < 0) {
+        player.direction = 1;
+        player.color = "blue"
+        bounce++
+        
+        //player.x - random(0, totalWidth)
+      //om spelaren når vänster kant så studsar den tillbaka ^^
+    }
+    
+    if(bounce <= 20) {
+
+        picture(player.x - player.size * 1.5, player.y - player.size * 1.5, 
+        "https://png.pngtree.com/png-clipart/20250102/original/pngtree-monkey-picture-png-image_18632018.png", player.size *3, player.size *3) //inte klar
+    }
+
+}
+
+
+
+
+    </script>
+</body>
+</html>
