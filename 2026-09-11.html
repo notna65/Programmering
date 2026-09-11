@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+
+
+        var player = { x: totalWidth - 300, y: 200, size: 50, color: "blue", speedX: 3, speedY: 3, direction: 1, directionY: -1}
+
+        function update() {
+
+        clearScreen();
+        //circle(player.x, player.y, player.size, player.color);
+        rectangle(player.x, player.y, 150, 100, player.color)
+        picture(player.x, player.y, "https://shorturl.at/tQfCC", 150, 100)
+        player.x = player.x + player.speedX * player.direction;
+        player.y = player.y + player.speedX * player.directionY;
+
+        if (player.x + 150 > totalWidth) {
+            player.color = mixColor(random(256), random(256), random(256))
+            player.direction = -1;
+            console.log("höger")
+        }
+        if (player.x < 0){
+            player.color = mixColor(random(256), random(256), random(256))
+            player.direction = 1;
+            console.log("vänster")
+        }
+        if (player.y < 0) {
+            player.color = mixColor(random(256), random(256), random(256))
+            player.directionY = 1;
+            console.log("uppe")
+        }
+        if(player.y + 100 > totalHeight) {player.color = mixColor(random(256), random(256), random(256))
+
+            player.directionY = -1
+            console.log("nere")
+        }
+        if(player.x < 0 && player.y < 0) {
+            text(400, 400, 40, "winner winner chicken dinner", "black")
+            stopUpdate()
+            console.log("bob")
+        }
+
+        console.log(totalWidth)
+        if(player.x < totalWidth && player.y < 0) {
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
