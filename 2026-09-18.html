@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+        var color = "red"
+        var size = 50
+        var sudd = 50
+        
+        function update() {
+            if(mouse.left) {
+                if(keyboard.q) {
+                    rectangle(mouse.x, mouse.y, 50, 50, color)
+                } else {
+                  circle(mouse.x, mouse.y, size, color)
+                }
+               
+            }
+            if(mouse.right) {
+                circle(mouse.x, mouse.y, size, "white")
+            }
+            if(keyboard.two) {
+                color = "green"
+            }
+            if(keyboard.one) {
+                color = "red"
+            }
+            if(keyboard.three) {
+                color = "yellow"
+            }
+            if(keyboard.four) {
+                color = "blue"
+            }
+            if(keyboard.five) {
+                color = "purple"
+            }
+            if(keyboard.six) {
+                color = "black"
+            }
+            if(keyboard.up) {
+                size++
+            }
+            if(keyboard.down) {
+                size--
+                if(size < 1) {
+                    size = 1
+                }
+                
+            }
+            //if(keyboard.q) {
+                //rectangle(mouse.x, mouse.y, 50, 50, color)
+            //}
+            
+            text(50, 50, 40, "Färgen är: ", "black")
+            circle(500, 35, 20, color)
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
