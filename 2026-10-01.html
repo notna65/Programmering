@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+    var player = { x: 100, y: 300, size: 20, color: "blue", speed: 4, liv: 3 };
+
+var zombie1 = { x: 300, y: 220, speed: 2 };
+var zombie2 = { x: 500, y: 400, speed: 2 };
+var zombie3 = { x: 700, y: 260, speed: 2 };
+var poang = 0;  //Variabel för poäng
+var textColor
+var color = "red"
+
+function drawZombie(x, y) {
+  rectangle(x + 3, y - 10, 23, 65, "lightgreen");
+  rectangle(x + 3, y - 25, 23, 65, "gray");
+  circle(x + 15, y - 40, 20, "lightgreen");
+  circle(x, y - 40, 3, "red");
+  rectangle(x - 35, y - 20, 30, 14, "lightgreen");
+  rectangle(x - 20, y - 20, 30, 14, "gray");
+}
+
+function update() {
+  clearScreen();
+  text(20, 30, 24, "Zombiespelet", "black");
+
+  drawZombie(zombie1.x, zombie1.y);
+//   drawZombie(zombie2.x, zombie2.y);
+//   drawZombie(zombie3.x, zombie3.y);
+
+  circle(player.x, player.y, player.size, player.color);
+  text(600, 39, 34, "Antal liv: " + player.liv, textColor)
+
+  if (keyboard.d) {
+    player.x = player.x + player.speed;
+  }
+  if (keyboard.a) {
+    player.x = player.x - player.speed;
+  }
+  if (keyboard.w) {
+    player.y = player.y - player.speed;
+  }
+  if (keyboard.s) {
+    player.y = player.y + player.speed;
+  }
+  if(keyboard.space) {
+            player.speed = player.speed * 2 }
+            else{ player.speed = 4 }  
+
+
+
+
+
+
+
+
+  if (zombie1.x < player.x) {
+    zombie1.x = zombie1.x + zombie1.speed;
+  }
+  if (zombie1.x > player.x) {
+    zombie1.x = zombie1.x - zombie1.speed;
+  }
+  if (zombie1.y < player.y) {
+    zombie1.y = zombie1.y + zombie1.speed;
+  }
+  if (zombie1.y > player.y) {
+    zombie1.y = zombie1.y - zombie1.speed;
+  }
+  if(distance(player, zombie1) < 65) { //Om zombien träffar bollen (spelaren)
+    // text(280, 250, 50, "GAME OVER", "red"); //Så visas texten GAME OVER
+    //stopUpdate(); //Och spelet pausas
+    player.liv = player.liv - 1
+    zombie1.x = random(totalWidth)
+    zombie1.y = random(totalHeight)
+    if(distance(player, zombie1) < 65) {
+       zombie1.x = random(totalWidth)
+       zombie1.y = random(totalHeight)
+    }
+    if(player.liv == 0) {
+        text(280, 250, 50, "GAME OVER", "red");
+        stopUpdate()
+        }
+   } else {
+        poang = poang + 1;
+        text(20, 70, 24, "Poäng: " + poang, "black") //Detta är poängen som syns uppe i vänstra hörnet
+    
+  }
+//   if (zombie2.x < player.x) {
+//     zombie2.x = zombie2.x + zombie2.speed;
+//   }
+//   if (zombie2.x > player.x) {
+//     zombie2.x = zombie2.x - zombie2.speed;
+//   }
+//   if (zombie2.y < player.y) {
+//     zombie2.y = zombie2.y + zombie2.speed;
+//   }
+//   if (zombie2.y > player.y) {
+//     zombie2.y = zombie2.y - zombie2.speed;
+//   }
+    // if(distance(player, zombie2) < 65) {
+       
+    //     player.liv = player.liv - 1
+    //     zombie1.x = random(totalWidth)
+    //     zombie1.y = random(totalHeight)
+
+    // } else {
+    //     poang = poang + 1;
+    //     text(20, 70, 24, "Poäng: " + poang, "black")
+    // }
+   
+    
+    if(distance(player, zombie1) < 150) {
+       text(20, 150, 24, "Zombie nära!", "red")
+    }
+    //text(20, 50, 24, "Antal liv", textColor )
+    if( player.liv == 3 ) {
+        textColor = "green"
+    }
+    else if(player.liv == 2 ) {
+        textColor = "orange"
+    }
+    else if(player.liv == 1 ) {
+        textColor = "red"
+    }
+
+
+
+
+
+
+
+    if(keyboard.two) {
+                color = "green"
+            }
+
+
+   // OM zombie krockar med spelare 
+   // Spelare liv - 1
+
+   //OM spelare liv = 0
+   //Visa GAME OVER!
+   // Avsluta spelet
+    
+    
+       
+
+  
+  
+
+  
+
+// if(distance(player, zombie1) < 65 || distance(player, zombie2) < 65 || distance(player, zombie3) < 65) {
+    
+// } else {
+
+// }
+
+// for(var i = 1; i < 4; i++) {
+//     if(distance(player, zombie + i) < 65) {
+    
+//     } else {
+
+//     }
+// }
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
