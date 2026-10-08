@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+
+var player = { x: 100, y: 300, size: 20, color: "blue", speed: 4 };
+
+var zombie1 = { x: 300, y: 220, speed: 1 };
+var zombie2 = { x: 500, y: 400, speed: 1 };
+var zombie3 = { x: 700, y: 260, speed: 1 }; //Jag la till rörelse på zombie3
+var poang = 0;
+
+function drawZombie(x, y) {
+  save();
+  translate(x, y);
+  rectangle(3, -10, 23, 65, "lightgreen");
+  rectangle(3, -25, 23, 65, "gray");
+  circle(15, -40, 20, "lightgreen");
+  circle(0, -40, 3, "red");
+  rectangle(-35, -20, 30, 14, "lightgreen");
+  rectangle(-20, -20, 30, 14, "gray");
+  restore();
+}
+
+function update() {
+  clearScreen();
+  text(20, 30, 24, "Zombiespelet", "black");
+
+  drawZombie(zombie1.x, zombie1.y);
+  drawZombie(zombie2.x, zombie2.y);
+  drawZombie(zombie3.x, zombie3.y);
+
+  circle(player.x, player.y, player.size, player.color);
+
+  if (keyboard.d) {
+    player.x = player.x + player.speed;
+  }
+  if (keyboard.a) {
+    player.x = player.x - player.speed;
+  }
+  if (keyboard.w) {
+    player.y = player.y - player.speed;
+  }
+  if (keyboard.s) {
+    player.y = player.y + player.speed;
+  }
+
+
+//Jag byter ofta tangenter för att player ska flytta på sig, till wasd och inte piltangenter. 
+
+// Jag delade upp zombie rörelserna och jaga-koden så att de blev organiserade. Zombie1, zombie2, zombie3
+  if (zombie1.x < player.x) {
+    zombie1.x = zombie1.x + zombie1.speed;
+  }
+  if (zombie1.x > player.x) {
+    zombie1.x = zombie1.x - zombie1.speed;
+  }
+  if (zombie1.y < player.y) {
+    zombie1.y = zombie1.y + zombie1.speed;
+  }
+  if (zombie1.y > player.y) {
+    zombie1.y = zombie1.y - zombie1.speed;
+  }
+
+
+
+  if (distance(player, zombie1) < 65) {
+    text(280, 250, 50, "GAME OVER", "red");
+    stopUpdate();
+  } else {
+    poang = poang + 1;
+    text(20, 70, 24, "Poäng: " + poang, "black");
+  }
+
+
+
+  if (zombie2.x < player.x) {
+    zombie2.x = zombie2.x + zombie2.speed;
+  }
+  if (zombie2.x > player.x) {
+    zombie2.x = zombie1.x - zombie2.speed;
+  }
+  if (zombie2.y < player.y) {
+    zombie2.y = zombie2.y + zombie2.speed;
+  }
+  if (zombie2.y > player.y) {
+    zombie2.y = zombie2.y - zombie2.speed;
+  }
+
+
+
+  if (distance(player, zombie2) < 65) {
+    text(280, 250, 50, "GAME OVER!", "red");
+    stopUpdate();
+  } else {
+    poang = poang + 1;
+    text(20, 70, 24, "Poäng: " + poang, "black");
+  }
+
+
+
+  if (zombie3.x < player.x) {
+    zombie3.x = zombie3.x + zombie3.speed;
+  }
+  if (zombie3.x > player.x) {
+    zombie3.x = zombie3.x - zombie3.speed;
+  }
+  if (zombie3.y < player.y) {
+    zombie3.y = zombie3.y + zombie3.speed;
+  }
+  if (zombie3.y > player.y) {
+    zombie3.y = zombie3.y - zombie3.speed;
+  }
+
+
+
+  if (distance(player, zombie3) < 65) {
+    text(280, 250, 50, "GAME OVER!", "red");
+    stopUpdate();
+  } else {
+    poang = poang + 1;
+    text(20, 70, 24, "Poäng: " + poang, "black")
+  }
+
+  
+
+
+
+try {
+    nagotSomInteFinns();
+} catch (fel) {
+    console.log("Fångade ett fel: " + fel.message);  
+}
+//Tobias bad oss skriva in dethär. Detta är första gången vi har skrivit något som detta och jag är tveksam på vad det är ^^ 
+//När player och zombie flyttas runt så kan man de i console loggen hur "Fångade ett fel: nagotSomInteFinns is not defined "
+
+
+
+
+  
+  console.log(zombie2.x)
+
+  // STEG 2 kommer här
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
