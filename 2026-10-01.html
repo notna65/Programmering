@@ -15,7 +15,7 @@ var zombie2 = { x: 500, y: 400, speed: 2 };
 var zombie3 = { x: 700, y: 260, speed: 2 };
 var poang = 0;  //Variabel för poäng
 var textColor
-var color = "red"
+var color = "red" //Jag skulle försöka att byta färg på bollen genom att trycka på nummertangenterna. 
 
 function drawZombie(x, y) {
   rectangle(x + 3, y - 10, 23, 65, "lightgreen");
@@ -73,8 +73,7 @@ function update() {
     zombie1.y = zombie1.y - zombie1.speed;
   }
   if(distance(player, zombie1) < 65) { //Om zombien träffar bollen (spelaren)
-    // text(280, 250, 50, "GAME OVER", "red"); //Så visas texten GAME OVER
-    //stopUpdate(); //Och spelet pausas
+    
     player.liv = player.liv - 1
     zombie1.x = random(totalWidth)
     zombie1.y = random(totalHeight)
@@ -83,8 +82,8 @@ function update() {
        zombie1.y = random(totalHeight)
     }
     if(player.liv == 0) {
-        text(280, 250, 50, "GAME OVER", "red");
-        stopUpdate()
+        text(280, 250, 50, "GAME OVER", "red"); //Så visas texten GAME OVER
+        stopUpdate() //Och spelet pausas
         }
    } else {
         poang = poang + 1;
@@ -135,9 +134,7 @@ function update() {
 
 
 
-    if(keyboard.two) {
-                color = "green"
-            }
+  
 
 
    // OM zombie krockar med spelare 
