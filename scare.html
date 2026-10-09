@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>AstroRunner</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+    }
+    canvas {
+      display: block;
+      background: linear-gradient(to bottom, #000010, #001030);
+    }
+  </style>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+      // var audio = new Audio("https://tprealgy.github.io/resources/oof.mp3");
+        var player = {
+  x: 50,
+  y: 300,
+  width: 40,
+  height: 40,
+  velocityY: 0,
+  jumpForce: -12,
+  gravity: 0.6,
+  onGround: true,
+  color: "lime"
+};
+updatesPerSecond = 144
+
+var obstacles = [];
+var obstacleTimer = 0;
+var obstacleInterval = 90;
+var score = 0;
+var gameOver = false;
+
+function drawPlayer() {
+  rectangle(player.x, player.y, player.width, player.height, player.color);
+}
+
+function updatePlayer() {
+  if (keyboard.space && player.onGround) {
+    player.velocityY = player.jumpForce;
+    player.onGround = false;
+  }
+
+  player.velocityY = player.velocityY + player.gravity;
+  player.y = player.y + player.velocityY;
+
+  if (player.y + player.height >= totalHeight) {
+    player.y = totalHeight - player.height;
+    player.velocityY = 0;
+    player.onGround = true;
+  }
+}
+
+function spawnObstacle() {
+  if (obstacleTimer <= 0) {
+    obstacles.push({
+      x: totalWidth,
+      y: totalHeight - 60,
+      width: 30,
+      height: 60,
+      speed: 6
+    });
+    obstacleTimer = obstacleInterval;
+  } else {
+    obstacleTimer = obstacleTimer - 1;
+  }
+}
+
+function updateObstacles() {
+  for (var i = obstacles.length - 1; i >= 0; i--) {
+    var obs = obstacles[i];
+    obs.x = obs.x - obs.speed;
+    rectangle(obs.x, obs.y, obs.width, obs.height, "red");
+
+    if (obs.x + obs.width < 0) {
+      obstacles.splice(i, 1);
+      score = score + 1;
+    }
+
+    if (
+      player.x < obs.x + obs.width &&
+      player.x + player.width > obs.x &&
+      player.y < obs.y + obs.height &&
+      player.y + player.height > obs.y
+    ) {
+      gameOver = true;
+    }
+  }
+}
+
+function drawScore() {
+  text(10, 30, 20, "Poäng: " + score, "white");
+}
+
+function update() {
+  clearScreen();
+  rectangle(0, 0, totalWidth, totalHeight, "#000010");
+
+  drawPlayer();
+  updatePlayer();
+  spawnObstacle();
+  updateObstacles();
+  drawScore();
+  
+
+
+  if (gameOver) {
+    // window.location.href = "scare.html"
+    // audio.play()
+    // picture(0, 0, "https://i.pinimg.com/originals/c0/7f/97/c07f97f3234f1820d0388f1a62377a9a.gif", totalWidth, totalHeight)
+    // window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+
+    text(totalWidth / 2 - 150, totalHeight / 2, 40, "GAME OVER - Poäng: " + score, "red");
+    stopUpdate();
+
+
+  }
+}
+    </script>
+<!-- Code injected by live-server -->
+<script>
+	// <![CDATA[  <-- For SVG support
+	if ('WebSocket' in window) {
+		(function () {
+			function refreshCSS() {
+				var sheets = [].slice.call(document.getElementsByTagName("link"));
+				var head = document.getElementsByTagName("head")[0];
+				for (var i = 0; i < sheets.length; ++i) {
+					var elem = sheets[i];
+					var parent = elem.parentElement || head;
+					parent.removeChild(elem);
+					var rel = elem.rel;
+					if (elem.href && typeof rel != "string" || rel.length == 0 || rel.toLowerCase() == "stylesheet") {
+						var url = elem.href.replace(/(&|\?)_cacheOverride=\d+/, '');
+						elem.href = url + (url.indexOf('?') >= 0 ? '&' : '?') + '_cacheOverride=' + (new Date().valueOf());
+					}
+					parent.appendChild(elem);
+				}
+			}
+			var protocol = window.location.protocol === 'http:' ? 'ws://' : 'wss://';
+			var address = protocol + window.location.host + window.location.pathname + '/ws';
+			var socket = new WebSocket(address);
+			socket.onmessage = function (msg) {
+				if (msg.data == 'reload') window.location.reload();
+				else if (msg.data == 'refreshcss') refreshCSS();
+			};
+			if (sessionStorage && !sessionStorage.getItem('IsThisFirstTime_Log_From_LiveServer')) {
+				console.log('Live reload enabled.');
+				sessionStorage.setItem('IsThisFirstTime_Log_From_LiveServer', true);
+			}
+		})();
+	}
+	else {
+		console.error('Upgrade your browser. This Browser is NOT supported WebSocket for Live-Reloading.');
+	}
+	// ]]>
+</script>
+</body>
+</html>
