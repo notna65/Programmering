@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+var playerChoose = prompt("Vilken spelare?") //Med prompt så dyker det upp en textruta när man startar om sidan.
+//console.log(playerPatrik)
+
+var playerNames = [ 
+    "Henrik", "Adam", "Tobias"  //Spelarnas namn
+]
+
+var playerSprites = [ //Här är bilderna för angivna spelare. Henrik är en riddare, Adam en stege och Tobias är en vattenkokare
+    "https://mir-s3-cdn-cf.behance.net/project_modules/hd/ed275720093679.562e563a83084.png",
+    "https://static.vecteezy.com/system/resources/thumbnails/044/015/837/small/aluminium-ladder-on-transparent-background-png.png",
+    "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.elgiganten.se%2Fresource%2Fblob%2F6016180%2F6ae18db5b793ec6e61aa024b534eb1a3%2Fliten-vattenkokare-data.png&f=1&nofb=1&ipt=410b0a663c46ea13397cf0fa892a58cd3c7304b4626bd7b48382a9153e452ce5&ipo=images"
+]
+
+for (var i = 0; i < playerNames.length; i++) {
+    //console.log(i)
+    if (playerChoose == playerNames[i]) { //Om du tar ett namn från playerNames och skriver in det i playerChoose. Så får den angivna spelaren en karaktär från playerSprites 
+        //console.log(i)
+        var sprites = playerSprites[i]
+    }
+}
+        //console.log(color)
+
+
+//console.log(playerColors)
+
+var player = { x: 100, y: 300, size: 20, color: sprites, speed: 4, url: sprites };
+
+var zombie1 = { x: 300, y: 220, speed: 2 };
+var zombie2 = { x: 500, y: 400, speed: 3 };
+var zombie3 = { x: 700, y: 260, speed: 2 };
+var poang = 0;
+
+var enemies = [
+  { x: random(100, 700), y: 550, speed: 1 },
+  { x: random(100, 700), y: 550, speed: 1 },
+  { x: random(100, 700), y: 550, speed: 1 },
+  { x: random(100, 700), y: 550, speed: 1 },
+  { x: random(100, 700), y: 550, speed: 1 },
+  { x: random(100, 700), y: 550, speed: 1 }
+];
+
+function drawZombie(x, y) {
+  save();
+  translate(x, y);
+  rectangle(3, -10, 23, 65, "lightgreen");
+  rectangle(3, -25, 23, 65, "gray");
+  circle(15, -40, 20, "lightgreen");
+  circle(0, -40, 3, "red");
+  rectangle(-35, -20, 30, 14, "lightgreen");
+  rectangle(-20, -20, 30, 14, "gray");
+  restore();
+}
+
+function touches(a, b) {
+    return distance(a, b) < 65;
+}
+
+function update() {
+  clearScreen();
+  text(20, 30, 24, "Zombiespelet", "black");
+
+  drawZombie(zombie1.x, zombie1.y);
+  drawZombie(zombie2.x, zombie2.y);
+  drawZombie(zombie3.x, zombie3.y);
+
+//   circle(player.x, player.y, player.size, player.color);
+    picture(player.x, player.y, player.url, player.size + 70, player.size + 70)
+
+  if (keyboard.d) {
+    player.x = player.x + player.speed;
+  }
+  if (keyboard.a) {
+    player.x = player.x - player.speed;
+  }
+  if (keyboard.w) {
+    player.y = player.y - player.speed;
+  }
+  if (keyboard.s) {
+    player.y = player.y + player.speed;
+  }
+
+  if (zombie1.x < player.x) {
+    zombie1.x = zombie1.x + zombie1.speed;
+  }
+  if (zombie1.x > player.x) {
+    zombie1.x = zombie1.x - zombie1.speed;
+  }
+  if (zombie1.y < player.y) {
+    zombie1.y = zombie1.y + zombie1.speed;
+  }
+  if (zombie1.y > player.y) {
+    zombie1.y = zombie1.y - zombie1.speed;
+  }
+
+  if (touches(player, zombie1)) {
+    text(280, 250, 50, "GAME OVER", "red");
+    stopUpdate();
+  } else {
+    poang = poang + 1;
+    text(20, 70, 24, "Poäng: " + poang, "black");
+  }
+
+  if (zombie2.x < player.x) {
+    zombie2.x = zombie2.x + zombie2.speed;
+  }
+  if (zombie2.x > player.x) {
+    zombie2.x = zombie2.x - zombie2.speed;
+  }
+  if (zombie2.y < player.y) {
+    zombie2.y = zombie2.y + zombie2.speed;
+  }
+  if (zombie2.y > player.y) {
+    zombie2.y = zombie2.y - zombie2.speed;
+  }
+
+  if (touches(player, zombie2)) {
+    text(280, 250, 50, "GAME OVER", "red");
+    stopUpdate();
+  } else {
+    poang = poang + 1;
+  }
+
+  for (var i = 0; i < enemies.length; i++) {
+
+    // STEG 1: jaga-koden kommer här
+
+    if (enemies[i].x < player.x) {
+        enemies[i].x = enemies[i].x + enemies[i].speed;
+    }
+    if (enemies[i].x > player.x) {
+        enemies[i].x = enemies[i].x - enemies[i].speed;
+    } 
+    if (enemies[i].y < player.y) {
+        enemies[i].y = enemies[i].y + enemies[i].speed;
+    }
+    if (enemies[i].y > player.y) {
+        enemies[i].y = enemies[i].y - enemies[i].speed;
+    }
+
+    drawZombie(enemies[i].x, enemies[i].y);
+    if (touches(player, enemies[i])) {
+      text(280, 250, 50, "GAME OVER", "red");
+      stopUpdate();
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
