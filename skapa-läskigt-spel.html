@@ -1,0 +1,145 @@
+//Din kod ärbara text och sparad som en HTML-fil. Alla webbläsare har en exekveringmiljö (JavaScript-motor). Som läser varje rad av koden och kör den. Processorn räknar ut pixlarnas position och grafikkortet ritar ut dem på skärmen. 
+
+//Den kunskapen jag har fått från programmeringen hade jag kunnat använda för att koda spel. I framtiden skulle jag vela lära mig om webbutveckling, att bygga upp och underhålla webbplatser och felsöka problem. 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+var player = { x: 822, y: 280, size: 20, color: "blue", speed: 4};
+var wallHitImage = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fsvd.vgc.no%2Fv2%2Fimages%2F89d10c90-1e81-428c-95f0-68b87e9c37e2%3Ffit%3Dcrop%26format%3Dauto%26h%3D551%26q%3D80%26upscale%3Dtrue%26w%3D980%26s%3Db1d00dbee6e932ac21fcb701a57ad37dd4f4d855&f=1&nofb=1&ipt=a0d1d6e92f8727d4579f523711e7ad4ce117d34e9cc1897c2a30c723a8a3ca70&ipo=images";
+
+function touchesBlueWall(x, y) {
+  return getPixel(x + player.size, y).blue > 0 ||
+         getPixel(x - player.size, y).blue > 0 ||
+         getPixel(x, y + player.size).blue > 0 ||
+         getPixel(x, y - player.size).blue > 0;
+}
+
+function update() {
+clearScreen()
+
+
+
+  
+
+rectangle(30, 90, 740, 18, "blue");
+  rectangle(30, 90, 18, 460, "blue");
+  rectangle(752, 90, 18, 460, "blue");
+  rectangle(30, 532, 740, 18, "blue");
+  rectangle(48, 190, 150, 18, "blue");
+  rectangle(198, 190, 18, 130, "blue");
+  rectangle(216, 302, 150, 18, "blue");
+  rectangle(366, 190, 18, 130, "blue");
+  rectangle(384, 190, 150, 18, "blue");
+  rectangle(534, 190, 18, 130, "blue");
+  rectangle(552, 302, 150, 18, "blue");
+  rectangle(702, 302, 18, 130, "blue");
+  rectangle(120, 402, 180, 18, "blue");
+  rectangle(300, 402, 18, 112, "blue");
+  rectangle(400, 452, 180, 18, "blue");
+  rectangle(580, 352, 18, 118, "blue");
+
+
+
+
+
+
+
+
+
+  var nextX = player.x
+  var nextY = player.y
+
+
+
+
+  if (keyboard.d) {
+    nextX = player.x + player.speed;
+  }
+  if (keyboard.a) {
+    nextX = player.x - player.speed;
+  }
+  if (keyboard.w) {
+    nextY = player.y - player.speed;
+  }
+  if (keyboard.s) {
+    nextY = player.y + player.speed;
+  }
+
+
+
+  if (touchesBlueWall(nextX, player.y)) {
+    picture(0, 0, wallHitImage, totalWidth, totalHeight);
+    stopUpdate();
+    return;
+  } else {
+    player.x = nextX
+  }
+  if (touchesBlueWall(player.x, nextY)) {
+    picture(0, 0, wallHitImage, totalWidth, totalHeight);
+    stopUpdate();
+    return;
+  } else {
+    player.y = nextY
+  }
+
+
+circle(player.x, player.y, player.size, player.color);
+// rectangle(player.x, player.y, player.size, player.size, player.color)
+
+}
+
+
+//Jag vill göra en labyrint och man ska inte kunna gå igenom väggarna i den. Hur gör jag med totalWidth osv
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
