@@ -67,22 +67,40 @@ function touches(a, b) {
 
 function update() {
   clearScreen();
-  rectangle(30, 90, 740, 18, "black");
+    // Labyrintens ytterväggar
+  rectangle(30, 90, 130, 18, "black");
+  rectangle(230, 90, 200, 18, "black");
   rectangle(30, 90, 18, 460, "black");
-  rectangle(752, 90, 18, 460, "black");
-  rectangle(30, 532, 740, 18, "black");
-  rectangle(48, 190, 150, 18, "black");
-  rectangle(198, 190, 18, 130, "black");
-  rectangle(216, 302, 150, 18, "black");
-  rectangle(366, 190, 18, 130, "black");
-  rectangle(384, 190, 150, 18, "black");
-  rectangle(534, 190, 18, 130, "black");
-  rectangle(552, 302, 150, 18, "black");
-  rectangle(702, 302, 18, 130, "black");
-  rectangle(120, 402, 180, 18, "black");
-  rectangle(300, 402, 18, 112, "black");
-  rectangle(400, 452, 180, 18, "black");
-  rectangle(580, 352, 18, 118, "black");
+  rectangle(412, 90, 18, 460, "black");
+  rectangle(30, 532, 320, 18, "black");
+  rectangle(410, 532, 20, 18, "black");
+
+  // Inre väggar
+  rectangle(100, 108, 18, 100, "black");
+  rectangle(118, 190, 100, 18, "black");
+  rectangle(200, 108, 18, 82, "black");
+
+  rectangle(270, 108, 18, 145, "black");
+  rectangle(218, 235, 52, 18, "black");
+
+  rectangle(48, 260, 85, 18, "black");
+  rectangle(115, 208, 18, 52, "black");
+  rectangle(150, 208, 18, 130, "black");
+  rectangle(168, 320, 90, 18, "black");
+
+  rectangle(320, 108, 18, 90, "black");
+  rectangle(288, 180, 95, 18, "black");
+  rectangle(365, 198, 18, 100, "black");
+
+  rectangle(48, 355, 125, 18, "black");
+  rectangle(80, 373, 18, 100, "black");
+  rectangle(98, 455, 100, 18, "black");
+
+  rectangle(220, 355, 18, 115, "black");
+  rectangle(238, 452, 95, 18, "black");
+  rectangle(300, 300, 18, 105, "black");
+  rectangle(318, 300, 80, 18, "black");
+  rectangle(380, 318, 18, 120, "black");
   text(20, 30, 24, "Zombiespelet", "black");
 
   drawZombie(zombie1.x, zombie1.y);
