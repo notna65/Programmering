@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="http://koda.nu/simple.js">
+
+
+ var player = {x: 822, y: 280, size:20, color:"blue", speed:4};
+ var wallHitImage = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmymemecards.com%2Fcards%2Fthumb%2Fcat-pointing-and-laughing.webp&f=1&nofb=1&ipt=240637c5aeef1205dae829b011b2ec880bd145bbba8fecb618be70e5a135eb0e&ipo=images"
+
+ function touchesBlueWall(x, y) {
+    return getPixel(x + player.size, y).blue > 0||
+    getPixel(x - player.size, y).blue > 0||
+    getPixel(x,y + player.size).blue >0||
+    getPixel(x,y - player.size).blue >0;
+ }
+
+function update() {
+    clearScreen()
+
+//rectangle(100, 90, 150, 25, "blue")
+rectangle(55, 90, 745, 25, "blue") //Övre outline
+rectangle(775, 110, 25, 700, "blue") //Höger outline
+//rectangle(725, 310, 200, 25, "blue")
+//rectangle(325, 200, 355, 320, "blue")
+//rectangle(135, 320, 145, 220, "blue")
+//rectangle(55, 100, 155, 120, "blue")
+rectangle(55, 90, 25, 720, "blue") //Vänster outline
+rectangle(55, 785, 725, 25, "blue") //Nedre outline
+
+
+}
+
+
+//Den här lektionen kom jag inte långt. Jag letade efter mitt gamla skräckspel som vi gjorde innan halloween.
+//Jag hittade den på teams och jag har gjort väggarna för ena labyrinten, variabler och lagt in en bild
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>
