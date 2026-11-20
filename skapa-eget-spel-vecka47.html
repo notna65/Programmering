@@ -9,28 +9,177 @@
     <script src="http://koda.nu/simple.js">
 
 
- var player = {x: 822, y: 280, size:20, color:"blue", speed:4};
+ var player = {x: 95, y: 50, size:20, color:"blue", speed:4};
  var wallHitImage = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmymemecards.com%2Fcards%2Fthumb%2Fcat-pointing-and-laughing.webp&f=1&nofb=1&ipt=240637c5aeef1205dae829b011b2ec880bd145bbba8fecb618be70e5a135eb0e&ipo=images"
 
  function touchesBlueWall(x, y) {
-    return getPixel(x + player.size, y).blue > 0||
-    getPixel(x - player.size, y).blue > 0||
-    getPixel(x,y + player.size).blue >0||
-    getPixel(x,y - player.size).blue >0;
+    return getPixel(x + player.size, y).blue > 250||
+    getPixel(x - player.size, y).blue > 250||
+    getPixel(x, y + player.size).blue > 250||
+    getPixel(x, y - player.size).blue > 250;
  }
+
+
+var zombie1 = { x: 300, y: 220, speed: 1 };
+var zombie2 = { x: 500, y: 400, speed: 1 };
+
+
+function drawZombie(x, y) {
+  save();
+  translate(x, y);
+  //rectangle(3, -10, 23, 65, "gray");
+  rectangle(8, -29, 15, 35, "gray"); //ben
+  circle(15, -40, 17, "gray"); //huvud
+  circle(4, -41, 3, "#a200dd"); //ögon
+  //rectangle(-35, -20, 30, 14, "gray");
+  rectangle(-11, -20, 22, 9, "gray"); //armar
+  restore();
+}
+
+
+ 
 
 function update() {
     clearScreen()
 
-//rectangle(100, 90, 150, 25, "blue")
-rectangle(55, 90, 745, 25, "blue") //Övre outline
-rectangle(775, 110, 25, 700, "blue") //Höger outline
-//rectangle(725, 310, 200, 25, "blue")
-//rectangle(325, 200, 355, 320, "blue")
-//rectangle(135, 320, 145, 220, "blue")
-//rectangle(55, 100, 155, 120, "blue")
-rectangle(55, 90, 25, 720, "blue") //Vänster outline
-rectangle(55, 785, 725, 25, "blue") //Nedre outline
+    rectangle(0, 0, totalWidth, totalHeight, "black")
+
+    // Ytterväggar, 12 pixlar tjocka
+  rectangle(125, 90, 775, 12, "blue"); //vänster uppe
+  rectangle(900, 90, 925, 12, "blue");
+  rectangle(55, 90, 12, 720, "blue");
+  rectangle(1813, 90, 12, 720, "blue");
+  rectangle(55, 798, 1615, 12, "blue");
+  rectangle(1750, 798, 75, 12, "blue");
+
+  // Inre väggar
+  //rectangle(67, 180, 233, 12, "blue");
+  //rectangle(420, 180, 320, 12, "blue");
+  rectangle(810, 180, 230, 12, "blue");
+  //rectangle(1280, 180, 533, 12, "blue");
+
+  rectangle(300, 102, 12, 78, "blue");
+  rectangle(420, 192, 12, 128, "blue");
+  rectangle(740, 102, 12, 78, "blue");
+  //rectangle(870, 192, 12, 128, "blue");
+  rectangle(1100, 102, 12, 155, "blue");
+  rectangle(1280, 192, 12, 128, "blue");
+
+  rectangle(67, 320, 143, 12, "blue");
+  rectangle(330, 320, 270, 12, "blue");
+  rectangle(720, 320, 280, 12, "blue");
+  rectangle(1120, 320, 280, 12, "blue");
+  rectangle(1470, 320, 253, 12, "blue");
+
+  rectangle(210, 192, 12, 128, "blue");
+  rectangle(600, 332, 12, 168, "blue");
+  rectangle(1000, 192, 12, 128, "blue");
+  rectangle(1400, 332, 12, 168, "blue");
+
+  rectangle(210, 500, 270, 12, "blue");
+  rectangle(600, 500, 300, 12, "blue");
+  rectangle(1020, 500, 260, 12, "blue");
+  rectangle(1400, 500, 250, 12, "blue");
+
+  rectangle(480, 382, 12, 130, "blue");
+  rectangle(888, 512, 12, 90, "blue");
+  rectangle(1280, 332, 12, 168, "blue");
+  rectangle(1712, 149, 12, 595, "blue");
+
+  rectangle(124, 650, 333, 12, "blue");
+  rectangle(420, 650, 480, 12, "blue");
+  rectangle(970, 650, 270, 12, "blue");
+  rectangle(1300, 650, 280, 12, "blue");
+
+  //rectangle(300, 512, 12, 138, "blue");
+  rectangle(420, 662, 12, 80, "blue");
+  rectangle(1200, 512, 12, 138, "blue");
+  rectangle(1300, 662, 12, 93, "blue");
+
+
+  drawZombie(zombie1.x, zombie1.y);
+  drawZombie(zombie2.x, zombie2.y);
+
+
+var nextX = player.x
+var nextY = player.y
+
+
+
+if(keyboard.d) {
+    nextX = player.x + player.speed;
+}
+if(keyboard.a) {
+    nextX = player.x - player.speed;
+}
+if(keyboard.w){
+    nextY = player.y - player.speed
+}
+if(keyboard.s){
+    nextY = player.y + player.speed;
+}
+
+if (zombie1.x < player.x) {
+    zombie1.x = zombie1.x + zombie1.speed;
+  }
+  if (zombie1.x > player.x) {
+    zombie1.x = zombie1.x - zombie1.speed;
+  }
+  if (zombie1.y < player.y) {
+    zombie1.y = zombie1.y + zombie1.speed;
+  }
+  if (zombie1.y > player.y) {
+    zombie1.y = zombie1.y - zombie1.speed;
+  }
+
+    if (zombie2.x < player.x) {
+    zombie2.x = zombie2.x + zombie2.speed;
+  }
+  if (zombie2.x > player.x) {
+    zombie2.x = zombie2.x - zombie2.speed;
+  }
+  if (zombie2.y < player.y) {
+    zombie2.y = zombie2.y + zombie2.speed;
+  }
+  if (zombie2.y > player.y) {
+    zombie2.y = zombie2.y - zombie2.speed;
+  }
+
+
+
+
+
+if(touchesBlueWall(nextX, player.y)){
+    picture(0, 0, wallHitImage, totalWidth, totalHeight);
+    stopUpdate();
+    return;
+}   else{
+    player.x = nextX
+}
+
+if(touchesBlueWall(player.x, nextY)){
+    picture(0, 0, wallHitImage, totalWidth, totalHeight);
+    stopUpdate();
+    return;
+}else{
+    player.y = nextY
+}
+
+
+
+
+circle(player.x, player.y, player.size, player.color);
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
@@ -38,6 +187,11 @@ rectangle(55, 785, 725, 25, "blue") //Nedre outline
 
 //Den här lektionen kom jag inte långt. Jag letade efter mitt gamla skräckspel som vi gjorde innan halloween.
 //Jag hittade den på teams och jag har gjort väggarna för ena labyrinten, variabler och lagt in en bild
+
+//Fredag vecka47 idag har jag gjort klart labyrinten, ändrat bakgrundsfärg, zombie färg/storlek. Jag fick höja //return getPixel(x + player.size, y).blue > 5|| till > 250 istället för att den blåa färgen var för blå.
+//Anledningen var att de vanliga zombierna hade lite blått i sig då grön har blå i sig.
+
+
 
 
 
