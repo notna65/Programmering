@@ -9,9 +9,10 @@
     <script src="http://koda.nu/simple.js">
 
 
- var player = {x: 95, y: 50, size:20, color:"blue", speed:4};
- var wallHitImage = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmymemecards.com%2Fcards%2Fthumb%2Fcat-pointing-and-laughing.webp&f=1&nofb=1&ipt=240637c5aeef1205dae829b011b2ec880bd145bbba8fecb618be70e5a135eb0e&ipo=images"
-
+ var player = {x: 95, y: 50, size:20, color:"red", speed:4}; //Variabeln för spelaren/bollen. 
+ 
+ var wallHitImage = "scarymazegame.jpg"
+ //Bilden som poppar upp när man dör ^^
  function touchesBlueWall(x, y) {
     return getPixel(x + player.size, y).blue > 250||
     getPixel(x - player.size, y).blue > 250||
@@ -19,11 +20,11 @@
     getPixel(x, y - player.size).blue > 250;
  }
 
-
+//Deras position och hastighet. 
 var zombie1 = { x: 300, y: 220, speed: 1 };
 var zombie2 = { x: 500, y: 400, speed: 1 };
 
-
+//Funktionen för att rita ut zombies
 function drawZombie(x, y) {
   save();
   translate(x, y);
@@ -42,9 +43,11 @@ function drawZombie(x, y) {
 function update() {
     clearScreen()
 
-    rectangle(0, 0, totalWidth, totalHeight, "black")
+  
+  rectangle(0, 0, totalWidth, totalHeight, "black") //Bakgrunden 
 
-    // Ytterväggar, 12 pixlar tjocka
+
+  //Allt nedanför är för labyrinten. 
   rectangle(125, 90, 775, 12, "blue"); //vänster uppe
   rectangle(900, 90, 925, 12, "blue");
   rectangle(55, 90, 12, 720, "blue");
@@ -52,7 +55,6 @@ function update() {
   rectangle(55, 798, 1615, 12, "blue");
   rectangle(1750, 798, 75, 12, "blue");
 
-  // Inre väggar
   //rectangle(67, 180, 233, 12, "blue");
   //rectangle(420, 180, 320, 12, "blue");
   rectangle(810, 180, 230, 12, "blue");
@@ -96,7 +98,7 @@ function update() {
   rectangle(1200, 512, 12, 138, "blue");
   rectangle(1300, 662, 12, 93, "blue");
 
-
+  //Funktionen drawZombie används för att rita ut zombies på angivna kordinater. 
   drawZombie(zombie1.x, zombie1.y);
   drawZombie(zombie2.x, zombie2.y);
 
@@ -119,6 +121,11 @@ if(keyboard.s){
     nextY = player.y + player.speed;
 }
 
+if(distance(player, zombie1) < 40) {
+    text(280, 250, 50, "You were slain...", "red");
+    stopUpdate();
+}
+
 if (zombie1.x < player.x) {
     zombie1.x = zombie1.x + zombie1.speed;
   }
@@ -130,6 +137,11 @@ if (zombie1.x < player.x) {
   }
   if (zombie1.y > player.y) {
     zombie1.y = zombie1.y - zombie1.speed;
+  }
+
+  if(distance(player, zombie1) < 40) {
+    text(280, 250, 50, "You were slain...", "red");
+    stopUpdate();
   }
 
     if (zombie2.x < player.x) {
@@ -148,7 +160,7 @@ if (zombie1.x < player.x) {
 
 
 
-
+//om spelarna rör vi färgen blåså dyker kattbilden upp, annars så fortsätter spelet. 
 if(touchesBlueWall(nextX, player.y)){
     picture(0, 0, wallHitImage, totalWidth, totalHeight);
     stopUpdate();
@@ -164,6 +176,10 @@ if(touchesBlueWall(player.x, nextY)){
 }else{
     player.y = nextY
 }
+/*if(touchesBlueWall(zombie2.y, player.x)){
+    picture(0, 0, wallHitImage, totalWidth, totalHeight);
+    stopUpdate();
+}*/
 
 
 
