@@ -108,16 +108,16 @@ var nextY = player.y
 
 
 
-if(keyboard.d) {
+if(keyboard.d || keyboard.right) {
     nextX = player.x + player.speed;
 }
-if(keyboard.a) {
+if(keyboard.a || keyboard.left) {
     nextX = player.x - player.speed;
 }
-if(keyboard.w){
+if(keyboard.w || keyboard.up) {
     nextY = player.y - player.speed
 }
-if(keyboard.s){
+if(keyboard.s || keyboard.down) {
     nextY = player.y + player.speed;
 }
 
