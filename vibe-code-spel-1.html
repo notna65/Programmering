@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#07140c">
+  <title>Pakchoi — turen är din</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #07140c;
+      color: #f3f5ff;
+      font-synthesis: none;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      padding: 38px 18px 48px;
+      background:
+        radial-gradient(ellipse at 50% 32%, rgba(69, 155, 73, .34), transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(30, 93, 42, .3), transparent 55%),
+        #07140c;
+    }
+
+    .game {
+      width: min(100%, 660px);
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .eyebrow {
+      margin: 0 0 7px;
+      color: #f5b930;
+      font-size: .75rem;
+      font-weight: 800;
+      letter-spacing: .24em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2.7rem, 10vw, 4rem);
+      font-weight: 900;
+      letter-spacing: .12em;
+      line-height: 1;
+    }
+
+    .subtitle {
+      margin: 12px 0 27px;
+      color: #9aa8ca;
+      font-size: clamp(.95rem, 3.8vw, 1.2rem);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin: 0 auto 24px;
+    }
+
+    .stat-label {
+      display: block;
+      margin-bottom: 4px;
+      color: #8998bd;
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .stat-value {
+      display: block;
+      font-size: clamp(1.2rem, 5vw, 2.05rem);
+      font-weight: 850;
+      font-variant-numeric: tabular-nums;
+      line-height: 1.1;
+    }
+
+    .bet-panel {
+      margin: 0 0 20px;
+      padding: 14px;
+      border: 1px solid rgba(104, 158, 111, .36);
+      border-radius: 18px;
+      background: rgba(16, 48, 27, .82);
+    }
+
+    .mode-panel { margin-bottom: 12px; }
+
+    .mode-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .mode-option {
+      min-height: 42px;
+      padding: 0 8px;
+      border: 1px solid #3e704b;
+      border-radius: 12px;
+      background: #143321;
+      color: #e2f5e5;
+      font-size: .82rem;
+    }
+
+    .mode-option[aria-pressed="true"] {
+      border-color: #82db89;
+      background: rgba(98, 193, 108, .18);
+      color: #c9ffce;
+      box-shadow: inset 0 0 0 1px rgba(130, 219, 137, .22);
+    }
+
+    .mode-option:disabled {
+      opacity: .48;
+      cursor: not-allowed;
+      filter: none;
+      transform: none;
+    }
+
+    .mode-description {
+      min-height: 1.2em;
+      margin: 8px 0 0;
+      color: #a7c7ad;
+      font-size: .76rem;
+    }
+
+    .bet-title {
+      margin: 0 0 10px;
+      color: #b6c3e1;
+      font-size: .82rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+    }
+
+    .bet-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .bet-option {
+      min-height: 42px;
+      padding: 0 8px;
+      border: 1px solid #3e704b;
+      border-radius: 12px;
+      background: #143321;
+      color: #e2f5e5;
+      font-size: .87rem;
+    }
+
+    .bet-option[aria-pressed="true"] {
+      border-color: #f3bd3d;
+      background: rgba(243, 189, 61, .16);
+      color: #ffd76f;
+      box-shadow: inset 0 0 0 1px rgba(243, 189, 61, .22);
+    }
+
+    .bet-option:disabled {
+      opacity: .38;
+      cursor: not-allowed;
+      filter: none;
+      transform: none;
+    }
+
+    .bet-note {
+      margin: 9px 0 0;
+      color: #97b69d;
+      font-size: .76rem;
+    }
+
+    .meter-heading {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+      color: #a9b5d3;
+      font-size: .9rem;
+      font-weight: 700;
+    }
+
+    .meter-value { color: #f5c13c; font-variant-numeric: tabular-nums; }
+
+    .meter {
+      height: 13px;
+      overflow: hidden;
+      margin-bottom: 20px;
+      border: 1px solid #47784d;
+      border-radius: 999px;
+      background: #0c2514;
+    }
+
+    .meter-fill {
+      width: 0;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #18c985, #f3c342);
+      transition: width .35s ease;
+    }
+
+    .board-wrap {
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #43804d;
+      border-radius: 34px;
+      background: linear-gradient(145deg, #1a4428, #102d1b 58%, #194327);
+      box-shadow: 0 20px 70px rgba(0, 0, 0, .42), inset 0 0 42px rgba(117, 210, 124, .13), inset 0 1px 0 rgba(255, 255, 255, .12);
+    }
+
+    .confetti-canvas {
+      position: fixed;
+      z-index: 20;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .pakchoi-flyby {
+      position: fixed;
+      z-index: 30;
+      left: 0;
+      width: 96px;
+      height: 96px;
+      min-height: 0;
+      padding: 4px;
+      overflow: hidden;
+      border: 3px solid #d6ff9a;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 28px rgba(177, 255, 91, .9);
+    }
+
+    .pakchoi-flyby.flying {
+      animation: pakchoi-cross 15s linear forwards;
+    }
+
+    .pakchoi-flyby img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .pakchoi-flyby[hidden] { display: none; }
+
+    @keyframes pakchoi-cross {
+      from { transform: translateX(-110px) rotate(-18deg); }
+      to { transform: translateX(calc(100vw + 110px)) rotate(18deg); }
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      cursor: crosshair;
+      touch-action: manipulation;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 20px 0 15px;
+    }
+
+    button {
+      min-height: 56px;
+      padding: 0 28px;
+      border: 1px solid transparent;
+      border-radius: 999px;
+      color: #fff;
+      font: inherit;
+      font-size: 1.04rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform .15s ease, filter .15s ease, box-shadow .15s ease;
+    }
+
+    button:hover { filter: brightness(1.1); transform: translateY(-2px); }
+    button:active { transform: translateY(1px) scale(.98); }
+    button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+
+    .drop-button {
+      min-width: 174px;
+      background: linear-gradient(135deg, #f7bd36, #dc8e15);
+      box-shadow: 0 8px 24px rgba(230, 160, 32, .22);
+    }
+
+    .auto-button {
+      background: linear-gradient(135deg, #24864a, #176334);
+      border-color: #55a96d;
+      box-shadow: 0 8px 24px rgba(35, 145, 71, .2);
+    }
+
+    .auto-button[aria-pressed="true"] {
+      background: linear-gradient(135deg, #b34a43, #84332f);
+      border-color: #db776e;
+      box-shadow: 0 8px 24px rgba(190, 65, 58, .2);
+    }
+
+    .auto-button:disabled {
+      opacity: .48;
+      cursor: not-allowed;
+      filter: none;
+      transform: none;
+    }
+
+    .reset-button {
+      background: #173a23;
+      border-color: #43804d;
+    }
+
+    .hint {
+      max-width: 530px;
+      margin: 0 auto;
+      color: #a7c7ad;
+      font-size: .91rem;
+      line-height: 1.55;
+    }
+
+    .hint strong { color: #e1ffe5; }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 420px) {
+      body { padding: 28px 12px 36px; }
+      .board-wrap { border-radius: 25px; }
+      .controls { gap: 9px; }
+      button { min-height: 52px; padding: 0 20px; font-size: .98rem; }
+      .drop-button { min-width: 150px; }
+      .bet-panel { padding: 11px 8px; }
+      .bet-options { gap: 5px; }
+      .bet-option { min-height: 40px; padding: 0 4px; font-size: .78rem; }
+      .mode-options { gap: 5px; }
+      .mode-option { min-height: 40px; padding: 0 4px; font-size: .72rem; }
+      .stat-label { font-size: .62rem; letter-spacing: .06em; }
+    }
+
+    @media (min-width: 520px) {
+      .bet-options { grid-template-columns: repeat(6, 1fr); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="game">
+    <p class="eyebrow">Ett grönare spel om studs och tur</p>
+    <h1>PAKCHOI</h1>
+    <p class="subtitle">Släpp en kula och se vart turen tar den.</p>
+
+    <section class="stats" aria-label="Spelstatistik">
+      <div><span class="stat-label">Poäng</span><strong class="stat-value" id="score">0</strong></div>
+      <div><span class="stat-label">Spelade</span><strong class="stat-value" id="played">0</strong></div>
+      <div><span class="stat-label">I luften</span><strong class="stat-value" id="in-play">0</strong></div>
+      <div><span class="stat-label">Saldo</span><strong class="stat-value" id="balance">5 000 kr</strong></div>
+    </section>
+
+    <section class="bet-panel" aria-label="Välj spelläge och insats">
+      <div class="mode-panel">
+        <p class="bet-title">VÄLJ SPELLÄGE</p>
+        <div class="mode-options" role="group" aria-label="Välj spelläge">
+          <button class="mode-option" type="button" data-mode="jackpot" aria-pressed="true">Jackpot 50×</button>
+          <button class="mode-option" type="button" data-mode="high" aria-pressed="false">Hög chans</button>
+          <button class="mode-option" type="button" data-mode="low" aria-pressed="false">Låg chans</button>
+        </div>
+        <p class="mode-description" id="mode-description">En smal 50×-ficka, 10× och 3× runtom – undvik förlustfickorna!</p>
+        <p class="bet-note">1× betalar tillbaka insatsen. Byt läge när inga kulor är i luften.</p>
+      </div>
+      <p class="bet-title">INSATS PER KULA</p>
+      <div class="bet-options" role="group" aria-label="Välj insats per kula">
+        <button class="bet-option" type="button" data-bet="100" aria-pressed="true">100 kr</button>
+        <button class="bet-option" type="button" data-bet="500" aria-pressed="false">500 kr</button>
+        <button class="bet-option" type="button" data-bet="2500" aria-pressed="false">2 500 kr</button>
+        <button class="bet-option" type="button" data-bet="10000" aria-pressed="false">10 000 kr</button>
+        <button class="bet-option" type="button" data-bet="500000" aria-pressed="false">500 000 kr</button>
+        <button class="bet-option" type="button" data-bet="all" aria-pressed="false">All in</button>
+      </div>
+      <p class="bet-note">Insatsen justeras automatiskt efter saldot (100, 500, 2 500, 10 000 eller 500 000 kr). Autoclickern väntar om ingen insats går att betala.</p>
+    </section>
+
+    <div class="meter-heading">
+      <span>Poängmätare</span>
+      <span class="meter-value" id="meter-label">0 / 500</span>
+    </div>
+    <div class="meter" role="progressbar" aria-label="Poäng mot 500" aria-valuemin="0" aria-valuemax="500" aria-valuenow="0" id="meter">
+      <div class="meter-fill" id="meter-fill"></div>
+    </div>
+
+    <div class="board-wrap">
+      <canvas id="board" width="700" height="900" aria-label="Pakchoi-bräde. Klicka på brädet för att släppa en kula där."></canvas>
+    </div>
+
+    <div class="controls">
+      <button class="drop-button" id="drop-button" type="button">Släpp kula</button>
+      <button class="auto-button" id="auto-button" type="button" aria-pressed="false">Starta auto · 5 kulor/s</button>
+      <button class="reset-button" id="reset-button" type="button">Börja om</button>
+    </div>
+    <p class="hint">Tryck på <strong>mellanslag</strong> eller <strong>Släpp kula</strong> för att spela. Du kan också klicka på brädet för att välja startplats. Landar kulan i en ficka får du dess multiplikator gånger insatsen!</p>
+    <p class="sr-only" id="announcement" aria-live="polite"></p>
+  </main>
+  <canvas class="confetti-canvas" id="confetti-canvas" aria-hidden="true"></canvas>
+  <button class="pakchoi-flyby" id="pakchoi-bonus" type="button" aria-label="Fånga Pak Choi och vinn 50 miljoner kronor" hidden>
+    <img src="pakchoi-confetti.png" alt="">
+  </button>
+
+  <script>
+    (() => {
+      const canvas = document.getElementById("board");
+      const ctx = canvas.getContext("2d");
+      const confettiCanvas = document.getElementById("confetti-canvas");
+      const confettiCtx = confettiCanvas.getContext("2d");
+      const confettiPieces = [];
+      const pakchoiImage = new Image();
+      pakchoiImage.src = "pakchoi-confetti.png";
+      const pakchoiButton = document.getElementById("pakchoi-bonus");
+      const scoreEl = document.getElementById("score");
+      const playedEl = document.getElementById("played");
+      const inPlayEl = document.getElementById("in-play");
+      const balanceEl = document.getElementById("balance");
+      const dropButton = document.getElementById("drop-button");
+      const autoButton = document.getElementById("auto-button");
+      const betButtons = Array.from(document.querySelectorAll(".bet-option"));
+      const modeButtons = Array.from(document.querySelectorAll(".mode-option"));
+      const meter = document.getElementById("meter");
+      const meterFill = document.getElementById("meter-fill");
+      const meterLabel = document.getElementById("meter-label");
+      const announcement = document.getElementById("announcement");
+      const modeDescription = document.getElementById("mode-description");
+      const width = 700;
+      const height = 900;
+      const left = 55;
+      const right = 645;
+      const slotTop = 760;
+      const slotBottom = 880;
+      const pakchoiHour = 60 * 60 * 1000;
+      const pakchoiWindowStart = Date.now();
+      let lastPakchoiWindow = -1;
+      let pakchoiScheduleTimer = null;
+      let pakchoiHideTimer = null;
+      let pakchoiVisible = false;
+
+      function resizeConfettiCanvas() {
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+        confettiCanvas.width = Math.round(window.innerWidth * pixelRatio);
+        confettiCanvas.height = Math.round(window.innerHeight * pixelRatio);
+        confettiCtx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+      }
+
+      function launchPakchoiConfetti() {
+        const count = Math.min(140, 320 - confettiPieces.length);
+        for (let i = 0; i < count; i++) {
+          confettiPieces.push({
+            x: Math.random() * window.innerWidth,
+            y: Math.random() * window.innerHeight,
+            vx: (Math.random() - .5) * 150,
+            vy: 55 + Math.random() * 190,
+            angle: Math.random() * Math.PI * 2,
+            spin: (Math.random() - .5) * 7,
+            size: 20 + Math.random() * 24,
+            life: 3.5 + Math.random() * 1.5
+          });
+        }
+      }
+
+      function drawPakchoiConfetti(delta) {
+        if (confettiPieces.length === 0) return;
+        confettiCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        for (let i = confettiPieces.length - 1; i >= 0; i--) {
+          const piece = confettiPieces[i];
+          piece.life -= delta;
+          piece.x += piece.vx * delta;
+          piece.y += piece.vy * delta;
+          piece.vy += 90 * delta;
+          piece.angle += piece.spin * delta;
+          if (piece.life <= 0 || piece.y > window.innerHeight + piece.size) {
+            confettiPieces.splice(i, 1);
+            continue;
+          }
+          if (!pakchoiImage.complete || !pakchoiImage.naturalWidth) continue;
+          confettiCtx.save();
+          confettiCtx.globalAlpha = Math.min(1, piece.life);
+          confettiCtx.translate(piece.x, piece.y);
+          confettiCtx.rotate(piece.angle);
+          confettiCtx.drawImage(pakchoiImage, -piece.size / 2, -piece.size / 2, piece.size, piece.size);
+          confettiCtx.restore();
+        }
+      }
+
+      function hidePakchoi(message) {
+        if (pakchoiHideTimer !== null) {
+          window.clearTimeout(pakchoiHideTimer);
+          pakchoiHideTimer = null;
+        }
+        pakchoiVisible = false;
+        pakchoiButton.hidden = true;
+        pakchoiButton.classList.remove("flying");
+        if (message) announcement.textContent = message;
+      }
+
+      function showPakchoi() {
+        pakchoiScheduleTimer = null;
+        lastPakchoiWindow = Math.floor((Date.now() - pakchoiWindowStart) / pakchoiHour);
+        pakchoiVisible = true;
+        pakchoiButton.hidden = false;
+        pakchoiButton.style.top = `${80 + Math.random() * Math.max(0, window.innerHeight - 180)}px`;
+        pakchoiButton.classList.remove("flying");
+        void pakchoiButton.offsetWidth;
+        pakchoiButton.classList.add("flying");
+        announcement.textContent = "Pak Choi flyger förbi! Klicka på den inom 15 sekunder för 50 miljoner kronor.";
+        pakchoiHideTimer = window.setTimeout(() => {
+          hidePakchoi("Pak Choi flög förbi utan att bli fångad.");
+        }, 15000);
+        scheduleNextPakchoi();
+      }
+
+      function scheduleNextPakchoi() {
+        const now = Date.now();
+        let windowIndex = Math.floor((now - pakchoiWindowStart) / pakchoiHour);
+        if (windowIndex <= lastPakchoiWindow) windowIndex = lastPakchoiWindow + 1;
+        const windowStart = pakchoiWindowStart + windowIndex * pakchoiHour;
+        const eventTime = windowStart + Math.random() * pakchoiHour;
+        pakchoiScheduleTimer = window.setTimeout(showPakchoi, Math.max(0, eventTime - now));
+      }
+
+      function collectPakchoi() {
+        if (!pakchoiVisible) return;
+        hidePakchoi();
+        balance += 50000000;
+        const betNotice = restoreAffordableBet();
+        announcement.textContent = `Du fångade Pak Choi och vann 50 000 000 kronor! ${betNotice}`;
+        updateStats();
+      }
+
+      resizeConfettiCanvas();
+      window.addEventListener("resize", resizeConfettiCanvas);
+      pakchoiImage.addEventListener("error", () => {
+        announcement.textContent = "Pak Choi-konfettibilden kunde inte laddas.";
+      });
+
+      const gameModes = {
+        jackpot: {
+          payouts: [-1 / 3, -1 / 3, 3, 10, 50, 10, 3, -1 / 3, -1 / 3, -1 / 3],
+          narrowIndex: 4,
+          description: "En smal 50×-ficka, 10× och 3× runtom – undvik förlustfickorna!"
+        },
+        high: {
+          payouts: [1, 1, 1, 2, 2, 2, 2, 2, 1, 1],
+          narrowIndex: -1,
+          description: "5 fickor med 2× och 5 fickor med 1×."
+        },
+        low: {
+          payouts: [1, 1, 1, 1, 5, 1, 1, 1, 1, 1],
+          narrowIndex: 4,
+          description: "En smal 5×-ficka och 9 fickor med 1×."
+        }
+      };
+      const pegs = [];
+      const balls = [];
+      const particles = [];
+      let score = 0;
+      let played = 0;
+      let balance = 5000;
+      let selectedBet = 100;
+      let selectedMode = "jackpot";
+      let slotScores = gameModes[selectedMode].payouts;
+      let slotWidths;
+      let autoTimer = null;
+      let autoAdjustedBet = false;
+      let autoWaitingForFunds = false;
+      let lastTime = 0;
+
+      function getSlotWidths(mode) {
+        const totalWidth = right - left;
+        const slotCount = mode.payouts.length;
+        if (mode.narrowIndex < 0) return Array(slotCount).fill(totalWidth / slotCount);
+        const narrowWidth = 30;
+        const eachSide = (totalWidth - narrowWidth) / 2;
+        return mode.payouts.map((_, index) => {
+          if (index === mode.narrowIndex) return narrowWidth;
+          if (index < mode.narrowIndex) return eachSide / mode.narrowIndex;
+          return eachSide / (slotCount - mode.narrowIndex - 1);
+        });
+      }
+
+      function colorForMultiplier(multiplier) {
+        if (multiplier < 0) return "#ff7179";
+        if (multiplier === 50) return "#ff75d8";
+        if (multiplier === 10 || multiplier === 5) return "#f3bd3d";
+        if (multiplier === 2 || multiplier === 3) return "#55ddc5";
+        return "#a0df7a";
+      }
+
+      function chooseMode(modeName) {
+        if (balls.length > 0 || !gameModes[modeName]) return;
+        selectedMode = modeName;
+        slotScores = gameModes[modeName].payouts;
+        slotWidths = getSlotWidths(gameModes[modeName]);
+        modeDescription.textContent = gameModes[modeName].description;
+        modeButtons.forEach((button) => {
+          button.setAttribute("aria-pressed", String(button.dataset.mode === modeName));
+        });
+        const selectedButton = modeButtons.find((button) => button.dataset.mode === modeName);
+        announcement.textContent = `Spelläge: ${selectedButton.textContent}.`;
+      }
+
+      slotWidths = getSlotWidths(gameModes[selectedMode]);
+
+      const rowOffsets = [-20, -20, 20, 20, -10, -10, 10, 10, 0, 0];
+      for (let row = 0; row < 10; row++) {
+        const count = row % 2 === 0 ? 9 : 8;
+        const spacing = 65;
+        const startX = row % 2 === 0 ? 90 : 122.5;
+        for (let col = 0; col < count; col++) {
+          const jitter = Math.sin(row * 12.9898 + col * 78.233) * 2;
+          const isLeftEdge = col === 0;
+          const isRightEdge = col === count - 1;
+          const x = Math.max(left + 30, Math.min(right - 30, startX + col * spacing + rowOffsets[row] + jitter));
+          pegs.push({
+            x,
+            y: 145 + row * 57,
+            edge: isLeftEdge || isRightEdge,
+            inward: isLeftEdge ? 1 : isRightEdge ? -1 : 0
+          });
+        }
+      }
+
+      function updateStats() {
+        scoreEl.textContent = score.toLocaleString("sv-SE");
+        playedEl.textContent = played.toLocaleString("sv-SE");
+        inPlayEl.textContent = balls.length.toLocaleString("sv-SE");
+        balanceEl.textContent = `${balance.toLocaleString("sv-SE")} kr`;
+        const bet = selectedBet === "all" ? balance : selectedBet;
+        dropButton.disabled = bet <= 0 || balance < bet;
+        dropButton.setAttribute("aria-label", bet > 0 && balance >= bet ? `Släpp kula med ${bet.toLocaleString("sv-SE")} kronor i insats` : "Du har inga spelpengar kvar");
+        autoButton.disabled = (bet <= 0 || balance < bet) && autoTimer === null;
+        betButtons.forEach((button) => {
+          const amount = button.dataset.bet === "all" ? balance : Number(button.dataset.bet);
+          button.disabled = amount <= 0 || balance < amount;
+        });
+        modeButtons.forEach((button) => {
+          button.disabled = balls.length > 0;
+        });
+        const progress = Math.min(score, 500);
+        meterFill.style.width = `${progress / 5}%`;
+        meterLabel.textContent = `${progress} / 500`;
+        meter.setAttribute("aria-valuenow", String(progress));
+      }
+
+      function syncBetButtons() {
+        betButtons.forEach((button) => {
+          const isSelected = button.dataset.bet === "all"
+            ? selectedBet === "all"
+            : Number(button.dataset.bet) === selectedBet;
+          button.setAttribute("aria-pressed", String(isSelected));
+        });
+      }
+
+      function highestAffordableBet() {
+        const affordableBets = [100, 500, 2500, 10000, 500000].filter((bet) => bet <= balance);
+        return affordableBets.pop() || null;
+      }
+
+      function reduceBetIfNeeded() {
+        if (selectedBet === "all" && balance > 0) return "";
+        if (selectedBet !== "all" && balance >= selectedBet) return "";
+        autoAdjustedBet = true;
+        const previousBet = selectedBet;
+        const affordableBets = [100, 500, 2500, 10000, 500000]
+          .filter((bet) => (selectedBet === "all" || bet < selectedBet) && bet <= balance);
+        const affordableBet = affordableBets.pop();
+        selectedBet = affordableBet == null ? 100 : affordableBet;
+        syncBetButtons();
+        if (selectedBet === previousBet) return "";
+        return `Insatsen sänktes automatiskt till ${selectedBet.toLocaleString("sv-SE")} kr.`;
+      }
+
+      function restoreAffordableBet() {
+        if (!autoAdjustedBet) return "";
+        const affordableBet = highestAffordableBet();
+        if (affordableBet === null || affordableBet === selectedBet) return "";
+        selectedBet = affordableBet;
+        syncBetButtons();
+        return `Insatsen höjdes automatiskt till ${selectedBet.toLocaleString("sv-SE")} kr.`;
+      }
+
+      function stopAutoclicker(message) {
+        if (autoTimer !== null) {
+          window.clearInterval(autoTimer);
+          autoTimer = null;
+        }
+        autoWaitingForFunds = false;
+        autoButton.textContent = "Starta auto · 5 kulor/s";
+        autoButton.setAttribute("aria-pressed", "false");
+        if (message) announcement.textContent = message;
+        updateStats();
+      }
+
+      function toggleAutoclicker() {
+        if (autoTimer !== null) {
+          stopAutoclicker("Autoclicker stoppad.");
+          return;
+        }
+
+        const bet = selectedBet === "all" ? balance : selectedBet;
+        if (bet <= 0 || balance < bet) {
+          announcement.textContent = "Saldot räcker inte till den valda insatsen.";
+          return;
+        }
+
+        autoButton.textContent = "Stoppa auto";
+        autoButton.setAttribute("aria-pressed", "true");
+        autoWaitingForFunds = false;
+        announcement.textContent = "Autoclicker startad: 5 kulor per sekund.";
+        autoTimer = window.setInterval(() => {
+          const betNotice = restoreAffordableBet();
+          if (betNotice) announcement.textContent = betNotice;
+          const nextBet = selectedBet === "all" ? balance : selectedBet;
+          if (nextBet <= 0 || balance < nextBet) {
+            if (!autoWaitingForFunds) {
+              announcement.textContent = "Autoclickern väntar på saldo och kontrollerar igen automatiskt.";
+              autoWaitingForFunds = true;
+            }
+            return;
+          }
+          autoWaitingForFunds = false;
+          dropBall();
+        }, 200);
+        updateStats();
+      }
+
+      function dropBall(x) {
+        const bet = selectedBet === "all" ? balance : selectedBet;
+        if (bet <= 0 || balance < bet) {
+          announcement.textContent = "Saldot räcker inte till den valda insatsen.";
+          return false;
+        }
+        const startX = Math.max(left + 15, Math.min(right - 15, x == null ? 350 + (Math.random() - .5) * 170 : x));
+        balls.push({
+          x: startX,
+          y: 55,
+          vx: (Math.random() - .5) * 35,
+          vy: 30,
+          radius: 9,
+          bet,
+          trail: []
+        });
+        balance -= bet;
+        const betNotice = reduceBetIfNeeded();
+        played++;
+        if (betNotice) announcement.textContent = betNotice;
+        updateStats();
+        return true;
+      }
+
+      function addBurst(x, y, color) {
+        for (let i = 0; i < 13; i++) {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = 45 + Math.random() * 150;
+          particles.push({ x, y, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: .45, color });
+        }
+      }
+
+      function drawBoard() {
+        ctx.clearRect(0, 0, width, height);
+
+        const sideGlow = ctx.createLinearGradient(left, 0, right, 0);
+        sideGlow.addColorStop(0, "rgba(158, 255, 170, .12)");
+        sideGlow.addColorStop(.5, "rgba(20, 54, 29, .02)");
+        sideGlow.addColorStop(1, "rgba(158, 255, 170, .12)");
+        ctx.fillStyle = sideGlow;
+        ctx.fillRect(left, 35, right - left, 845);
+
+        ctx.save();
+        ctx.strokeStyle = "rgba(199, 255, 205, .72)";
+        ctx.lineWidth = 7;
+        ctx.shadowColor = "rgba(93, 231, 113, .52)";
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.moveTo(left, 38);
+        ctx.lineTo(left, 879);
+        ctx.moveTo(right, 38);
+        ctx.lineTo(right, 879);
+        ctx.stroke();
+        ctx.restore();
+
+        for (const peg of pegs) {
+          const glow = ctx.createRadialGradient(peg.x - 2, peg.y - 2, 1, peg.x, peg.y, 11);
+          glow.addColorStop(0, "#ffffff");
+          glow.addColorStop(.35, "#ffffff");
+          glow.addColorStop(.72, "#f2f3ff");
+          glow.addColorStop(1, "rgba(220, 224, 255, .12)");
+          ctx.fillStyle = glow;
+          ctx.shadowColor = "rgba(255, 255, 255, .75)";
+          ctx.shadowBlur = 7;
+          ctx.beginPath();
+          ctx.arc(peg.x, peg.y, 9, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.shadowBlur = 0;
+
+        let slotX = left;
+        for (let i = 0; i < slotScores.length; i++) {
+          const x = slotX;
+          const slotWidth = slotWidths[i];
+          const slotColor = colorForMultiplier(slotScores[i]);
+          ctx.fillStyle = `${slotColor}20`;
+          ctx.fillRect(x, slotTop, slotWidth, slotBottom - slotTop);
+          ctx.strokeStyle = "rgba(181, 232, 188, .62)";
+          ctx.lineWidth = 4;
+          ctx.beginPath();
+          ctx.moveTo(x, slotTop);
+          ctx.lineTo(x, slotBottom);
+          ctx.stroke();
+
+          ctx.textAlign = "center";
+          ctx.fillStyle = slotColor;
+          ctx.font = `800 ${Math.min(18, Math.max(11, slotWidth * .4))}px system-ui, sans-serif`;
+          ctx.fillText(slotScores[i] < 0 ? "−⅓" : `${slotScores[i]}×`, x + slotWidth / 2, 824);
+          ctx.fillStyle = "rgba(212, 222, 245, .75)";
+          ctx.font = `700 ${Math.min(9, Math.max(6, slotWidth * .16))}px system-ui, sans-serif`;
+          ctx.fillText(slotScores[i] < 0 ? "AV SALDOT" : "INSATS", x + slotWidth / 2, 848);
+          slotX += slotWidth;
+        }
+        ctx.strokeStyle = "rgba(181, 232, 188, .8)";
+        ctx.lineWidth = 5;
+        ctx.beginPath();
+        ctx.moveTo(left, slotTop);
+        ctx.lineTo(right, slotTop);
+        ctx.moveTo(left, slotBottom);
+        ctx.lineTo(right, slotBottom);
+        ctx.stroke();
+      }
+
+      function drawBall(ball) {
+        for (let i = 0; i < ball.trail.length; i++) {
+          const point = ball.trail[i];
+          ctx.globalAlpha = (i / ball.trail.length) * .22;
+          ctx.fillStyle = "#75ff45";
+          ctx.beginPath();
+          ctx.arc(point.x, point.y, ball.radius * (i / ball.trail.length), 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+        const gradient = ctx.createRadialGradient(ball.x - 3, ball.y - 4, 1, ball.x, ball.y, ball.radius * 1.7);
+        gradient.addColorStop(0, "#ffffff");
+        gradient.addColorStop(.35, "#d8ffbb");
+        gradient.addColorStop(.7, "#63ff35");
+        gradient.addColorStop(1, "rgba(255, 255, 255, 0)");
+        ctx.fillStyle = gradient;
+        ctx.shadowColor = "#64ff35";
+        ctx.shadowBlur = 24;
+        ctx.beginPath();
+        ctx.arc(ball.x, ball.y, ball.radius * 1.55, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+
+      function drawParticles(delta) {
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const particle = particles[i];
+          particle.life -= delta;
+          if (particle.life <= 0) {
+            particles.splice(i, 1);
+            continue;
+          }
+          particle.x += particle.vx * delta;
+          particle.y += particle.vy * delta;
+          particle.vy += 240 * delta;
+          ctx.globalAlpha = Math.min(1, particle.life * 2.5);
+          ctx.fillStyle = particle.color;
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+      }
+
+      function step(time) {
+        const delta = Math.min((time - (lastTime || time)) / 1000, .032);
+        lastTime = time;
+        drawBoard();
+
+        for (let i = balls.length - 1; i >= 0; i--) {
+          const ball = balls[i];
+          ball.trail.push({ x: ball.x, y: ball.y });
+          if (ball.trail.length > 7) ball.trail.shift();
+
+          ball.vy += 1450 * delta;
+          ball.x += ball.vx * delta;
+          ball.y += ball.vy * delta;
+          ball.vx *= 1 - delta * .13;
+
+          if (ball.x - ball.radius < left + 4) {
+            ball.x = left + 4 + ball.radius;
+            ball.vx = Math.abs(ball.vx) * .72;
+          } else if (ball.x + ball.radius > right - 4) {
+            ball.x = right - 4 - ball.radius;
+            ball.vx = -Math.abs(ball.vx) * .72;
+          }
+
+          for (const peg of pegs) {
+            const dx = ball.x - peg.x;
+            const dy = ball.y - peg.y;
+            const distance = Math.hypot(dx, dy);
+            const minDistance = ball.radius + 8;
+            if (distance > 0 && distance < minDistance) {
+              const nx = dx / distance;
+              const ny = dy / distance;
+              const overlap = minDistance - distance;
+              ball.x += nx * overlap;
+              ball.y += ny * overlap;
+              const velocityAlongNormal = ball.vx * nx + ball.vy * ny;
+              if (velocityAlongNormal < 0) {
+                const bounce = peg.edge ? 1.95 : 1.72;
+                ball.vx -= bounce * velocityAlongNormal * nx;
+                ball.vy -= bounce * velocityAlongNormal * ny;
+                if (peg.edge) ball.vx += peg.inward * 85;
+                ball.vx += (Math.random() - .5) * 45;
+              }
+            }
+          }
+
+          if (ball.y + ball.radius >= slotTop) {
+            let slot = 0;
+            let slotLeft = left;
+            while (slot < slotWidths.length - 1 && ball.x >= slotLeft + slotWidths[slot]) {
+              slotLeft += slotWidths[slot];
+              slot++;
+            }
+            const multiplier = slotScores[slot];
+            if (multiplier < 0) {
+              const loss = Math.round(balance / 3);
+              balance = Math.max(0, balance - loss);
+              const betNotice = reduceBetIfNeeded();
+              announcement.textContent = `Förlustficka! ${loss.toLocaleString("sv-SE")} kronor drogs från saldot. Nytt saldo: ${balance.toLocaleString("sv-SE")} kronor. ${betNotice}`;
+            } else {
+              score += multiplier;
+              const winnings = ball.bet * multiplier;
+              balance += winnings;
+              const betNotice = restoreAffordableBet();
+              if (multiplier === 50) {
+                launchPakchoiConfetti();
+                announcement.textContent = `JACKPOT! 50 gånger insatsen gav ${winnings.toLocaleString("sv-SE")} kronor. Pak Choi-konfetti! Nytt saldo: ${balance.toLocaleString("sv-SE")} kronor. ${betNotice}`;
+              } else {
+                announcement.textContent = `Kulan landade på ${multiplier} gånger. Insats ${ball.bet.toLocaleString("sv-SE")} kronor gav ${winnings.toLocaleString("sv-SE")} kronor. Nytt saldo: ${balance.toLocaleString("sv-SE")} kronor. ${betNotice}`;
+              }
+            }
+            addBurst(slotLeft + slotWidths[slot] / 2, slotTop + 35, colorForMultiplier(multiplier));
+            balls.splice(i, 1);
+            updateStats();
+          } else {
+            drawBall(ball);
+          }
+        }
+        drawParticles(delta);
+        drawPakchoiConfetti(delta);
+        requestAnimationFrame(step);
+      }
+
+      dropButton.addEventListener("click", () => dropBall());
+      autoButton.addEventListener("click", toggleAutoclicker);
+      pakchoiButton.addEventListener("click", collectPakchoi);
+      betButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          selectedBet = button.dataset.bet === "all" ? "all" : Number(button.dataset.bet);
+          autoAdjustedBet = false;
+          autoWaitingForFunds = false;
+          syncBetButtons();
+          updateStats();
+        });
+      });
+      modeButtons.forEach((button) => {
+        button.addEventListener("click", () => chooseMode(button.dataset.mode));
+      });
+      document.getElementById("reset-button").addEventListener("click", () => {
+        stopAutoclicker();
+        score = 0;
+        played = 0;
+        balance = 5000;
+        selectedBet = 100;
+        syncBetButtons();
+        balls.length = 0;
+        particles.length = 0;
+        confettiPieces.length = 0;
+        confettiCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+        announcement.textContent = "Spelet har börjat om. Ditt saldo är 5 000 kronor.";
+        updateStats();
+      });
+
+      canvas.addEventListener("pointerdown", (event) => {
+        const bounds = canvas.getBoundingClientRect();
+        const x = (event.clientX - bounds.left) * width / bounds.width;
+        if (event.clientY - bounds.top < bounds.height * .25) dropBall(x);
+      });
+
+      window.addEventListener("keydown", (event) => {
+        if (event.code === "Space" && !event.repeat && !/^(BUTTON|INPUT|TEXTAREA)$/.test(document.activeElement.tagName)) {
+          event.preventDefault();
+          dropBall();
+        }
+      });
+
+      updateStats();
+      requestAnimationFrame(step);
+      scheduleNextPakchoi();
+    })();
+  </script>
+</body>
+</html>
