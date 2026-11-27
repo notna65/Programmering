@@ -121,7 +121,7 @@ if(keyboard.s || keyboard.down) {
     nextY = player.y + player.speed;
 }
 
-if(distance(player, zombie1) < 40) {
+if(distance(player, zombie1) < 1) {
     text(280, 250, 50, "You were slain...", "red");
     stopUpdate();
 }
